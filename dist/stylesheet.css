@@ -1,0 +1,27 @@
+.navbar{
+    background: rgb(131,58,180);
+    background: radial-gradient(circle, rgba(131,58,180,1) 0%, rgb(29, 55, 253) 50%, rgb(69, 209, 252) 100%);
+}
+.navbar-brand{
+    font-size: 60px;
+    color: white;
+}
+.card-header{
+    background: rgb(232, 174, 238);
+    background: linear-gradient(150deg, rgb(181, 174, 238) 0%, rgba(148,187,233,1) 100%);
+}
+h3, h4, i{
+    color: white;
+}
+.card-body{
+    background-color: #F7F7F7;
+}
+p{
+    margin: 0.2%;
+    padding: 2%;
+    border: 1px solid #F7F7F7;
+    background-color: white;
+}
+.wholeCard{
+    box-shadow: 10px 10px 10px grey;
+}
