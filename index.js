@@ -15,7 +15,7 @@ const generateHTML = require("./src/generateHTML");
 const teamCards = [];
 
 // Generate the HTML code for the team profile page
-// const teamProfilePage = generateHTML(teamCards);
+
 
 // add manager prompts
 const addManager = ()=>{
@@ -115,7 +115,7 @@ const addEmployee = ()=>{
 
         teamCards.push(employee);
 
-        // if want to add one more employee, run addEmployee again
+        // if adding one more employee, run addEmployee again
         if (oneMore) {
             addEmployee(teamCards);
         }
@@ -126,12 +126,9 @@ const addEmployee = ()=>{
 }
 
 // function to generate the HTML
-// .then((teamCards) => {
 
 const generate = () => {
-    // const htmlContent = generateHTML(teamCards);
     fs.writeFile('./dist/index.html', generateHTML(teamCards), (err) => {
-    // fs.writeFile('./dist/index.html', teamProfilePage, (err) => {
         if (err) {
             console.log(err);
           } else {
