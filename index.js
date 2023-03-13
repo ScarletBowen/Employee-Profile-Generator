@@ -11,9 +11,45 @@ const Intern = require("./lib/intern");
 // generate HTML
 const generateHTML = require("./src/generateHTML");
 
-
 // team
 const teamCards = [];
+
+// Generate the HTML code for the team profile page
+const teamProfilePage = generateHTML(teamCards);
+
+// add manager prompts
+const addManager = ()=>{
+    inquirer
+        .prompt([
+        {
+            type:"input",
+            name:"name",
+            message:"What is the name of the manager of the team?",
+        },
+        {
+            type:"input",
+            name:"id",
+            message:"What is the manager employee ID?",
+        },
+        {
+            type:"input",
+            name:"email",
+            message:"what is the manager email address?",
+        },
+        {
+            type:"input",
+            name:"office",
+            message:"What is the office number?",
+        },
+    ])
+    .then ((managerInput) => {
+        const {name, id, email, office} = managerInput;
+        const manager = new Manager (name, id, email, office);
+        teamCards.push(manager);
+        console.log(manager);
+        addEmployee();
+    })
+};
 
 
 // add employee
@@ -21,24 +57,26 @@ const addEmployee = ()=>{
     inquirer
     .prompt([
         {
+            type:"input",
+            name:"name",
+            message:"What is the name of the employee on the team?",
+        },
+
+        {
             type:"list",
             name:"role",
             choices:["Engineer", "Intern"]
         },
+        
         {
             type:"input",
-            name:"name",
-            message:"What is the name of the engineer of the team?",
-        },
-        {
-            type:"input",
-            name:"ID",
-            message:"What is the engineer employee ID?",
+            name:"id",
+            message:"What is the employee ID?",
         },
         {
             type:"input",
             name:"email",
-            message:"what is the engineer email address?",
+            message:"what is the email address?",
         },
         {
             type:"input",
@@ -59,19 +97,19 @@ const addEmployee = ()=>{
             default: false
         }
     ])
-    .then (employeeInput=>{
-        let {name, ID, email, role, github, school, oneMore} = employeeInput;
+    .then((employeeInput)=>{
+        let {name, id, email, role, github, school, oneMore} = employeeInput;
         let employee;
         
         // engineer
         if (role === "Engineer"){
-            employee = new Engineer (name, ID, email, github);
+            employee = new Engineer (name, id, email, github);
             console.log(employee)
         }
         
         // intern
         if (role === "Intern"){
-            employee = new Intern (name, ID, email, school);
+            employee = new Intern (name, id, email, school);
             console.log(employee)
         }
 
@@ -79,69 +117,29 @@ const addEmployee = ()=>{
 
         // if want to add one more employee, run addEmployee again
         if (oneMore) {
-            return addEmployee(teamCards);
+            addEmployee(teamCards);
         }
         else{
-            return teamCards;
+            generate();
         }
-    })
-}
-
-
-// add manager prompts
-const addManager = ()=>{
-    return inquirer.prompt([
-        {
-            type:"input",
-            name:"name",
-            message:"What is the name of the manager of the team?",
-        },
-        {
-            type:"input",
-            name:"ID",
-            message:"What is the manager employee ID?",
-        },
-        {
-            type:"input",
-            name:"email",
-            message:"what is the manager email address?",
-        },
-        {
-            type:"input",
-            name:"officeNumber",
-            message:"What is the office number?",
-        },
-    ])
-    .then (managerInput => {
-        const {name, ID, email, officeNumber} = managerInput;
-        const manager = new Manager (name, ID, email, officeNumber);
-        teamCards.push(manager);
-        console.log(manager);
-        addEmployee();
     })
 }
 
 // function to generate the HTML
-const writeFile = data =>{
-    fs.writeFile("./dist/index.html", data, err=>{
-        if(err){
-            console.log(err)
-        }
-        else{
-            console.log("Your team profile has been generated successfully! Please check the dist folder.")
-        }
+// .then((teamCards) => {
+
+const generate = () => {
+    // const htmlContent = generateHTML(teamCards);
+    fs.writeFile('./dist/index.html', teamProfilePage, (err) => {
+        if (err) {
+            console.log(err);
+          } else {
+            console.log("Your team profile has been generated successfully!");
+           }
     })
-};
-function startApp(){
-    addManager()
-    .then(teamCards => {
-        return generateHTML(teamCards);
-    })
-    .then(pageHTML => {
-        return writeFile(pageHTML);
-    })
-    .catch(err => {
-        console.log(err);
-    });
+    }
+
+const startApp = () => {
+    addManager();
 }
 startApp();
